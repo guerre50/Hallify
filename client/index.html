@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Hallify.us: A Bootstrap Micro Theme</title>
+    <meta name="description" content="A new bootstrap theme">
+    <meta name="author" content="Damian Sowers">
+    <!-- Le styles -->
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
+    <link href='static/css/boxer.css' rel='stylesheet' type='text/css'>
+	<link href='static/css/animate.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="static/css/elusive-webfont.css">
+    <script src="static/js/libs/jquery.min.js" type="text/javascript"></script>
+    <script src="static/js/libs/jquery.smooth-scroll.js"></script>
+    <script src="static/js/libs/boxer.js"></script>
+	<script>
+		function createHall(url) {
+			var request = $.ajax({
+				url: "http://ec2-54-229-20-181.eu-west-1.compute.amazonaws.com:9091/api/halls",
+				type: "post",
+				data: {url:url}
+			}).done(function(response, textStatus) {
+				var id = response.id;
+
+        if (id) {
+           id = "http://ec2-54-229-20-181.eu-west-1.compute.amazonaws.com:9091/halls/" + id;
+           $.ajax({ 
+              url: "https://www.googleapis.com/urlshortener/v1/url",
+              type: "POST",
+              contentType : "application/json; charset=utf-8",
+              data: JSON.stringify({ "longUrl" :id })
+           }).done(function(response, textStatus){
+               $("#appendedInput").removeAttr("disabled").val(response.id);
+               $("#iconOutput").removeClass().addClass("icon-play");
+               $("#hallOutputdiv").addClass("animated shake");
+               $("#buttonOutput").removeClass("btn-danger").addClass("btn-success");
+               $("#outputHREF").attr("href", id);
+           }).fail(function(jqXHR, textStatus, errorThrown) {
+               console.log(errorThrown);
+           });
+        }
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				$("#liveURLtxt").addClass("animated shake");
+				
+				window.setTimeout( function(){
+					$("#liveURLtxt").removeClass("animated")
+				}, 1000);
+			});
+		};
+	</script>
+    <!-- elusive icons ie7 support -->
+    <!--[if lte IE 7]><script src="js/lte-ie7.js"></script><![endif]-->
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+    <style>
+      body {
+        padding-top: 50px; /* Only include this for the fixed top bar */
+      }
+    </style>
+  </head>
+  <body id="top">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+		  
+          <a class="brand" href="#top"><img width="30"  src="static/img/HAL9000.svg" style="margin-top:-5px"></img> Hallify.us</span></a>
+
+          <ul class="nav boxer_nav">
+            <li class="active"><a href="#top"><i class="icon-facetime-video"></i> Stream</a></li>
+            <li><a href="#product2"><i class="icon-download-alt"></i> Create Hall</a></li>
+            <li><a href="#product3"><i class="icon-user"></i> Share!</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <article class="featured_top">
+      <div class="container">
+        <div class="white_gradient">
+          <div class="row">
+            <div class="span12 align_center">
+			  <p>Give your audience more expressive power</p>
+              <h1 class="boxer_title">symmetric performances</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="body_article">
+      <div class="container">
+        <div class="row">
+          <div class="span7"><img class="span5" src="static/img/liveStream.png" /></div>
+          <div class="span5">
+            <h2 class="boxer_title">#1 Go live</h2><br>
+            Choose your favourite <strong>live stream</strong> service: <br><br>
+			<ul class="unstyled" style="margin-left:40px">
+				<li> <a href="http://www.ustream.tv/new" target="_blank">Ustream</a></li>
+				<li> <a href="http://www.twitch.tv/" target="_blank">twitch</a></li>
+				<li> <a href="http://www.youtube.com" target="_blank">youtube</a></li>
+				<li> <a href="http://www.youtube.com" target="_blank">livestream</a></li>
+			</ul>
+          </div>
+        </div>
+      </div>
+    </article>
+    
+    <article class="section_divider">
+      <div class="container">
+        <div class="next_section" style="width:200px; float:left; border-right: 1px solid #dbe3e5;"><span><a href="#product2" style="color:#888"></a></span>
+        </div>
+      </div>
+    </article>
+    
+    <span id="product2"></span>
+    <article class="body_article">
+      <div class="container">
+        <div class="row">
+          <div class="span5">
+			  <div class="span5">
+			  <h2 class="boxer_title">#2 Create the hall</h2><br>
+			  
+			  People will be able to <strong>join a hall</strong> and engage with your virtual audience in a more <strong>pro-active</strong> way 
+			  <br><br><br><br>
+			  <input id="liveURLtxt" class="span5" type="text" placeholder="Paste video url" oninput="createHall(this.value);">
+			  </div>
+		  </div>
+		  <div class="span5 offset2"><img src="static/img/hall.png">
+        </div>
+      </div>
+    </article>
+
+    <article class="section_divider">
+      <div class="container">
+        <div class="next_section" style="width:200px; float:left; border-right: 1px solid #dbe3e5;"><span><a href="#product3" style="color:#888"></a></span>
+        </div>
+      </div>
+    </article>
+    
+    <span id="product3"></span>
+    <article class="body_article">
+      <div class="container">
+        <div class="row">
+          <div class="span6">
+			<br><br>
+			<a href="https://www.facebook.com/" target="_blank"><img src="static/img/facebook_circle_color.svg"></a>
+			<a href="https://plus.google.com/" target="_blank"><img src="static/img/google_circle_color.svg"></a>
+			<a href="https://twitter.com/" target="_blank"><img src="static/img/twitter_circle_color.svg"></a>
+			<a href="https://github.com/" target="_blank"><img src="static/img/github_circle_color.svg"></a>
+			<a href="https://www.tumblr.com/" target="_blank"><img src="static/img/tumblr_circle_color.svg"></a>
+		  </div>
+          <div class="span5" ><h2 class="boxer_title">#3 Share it!</h2><br>
+             Spread &nbsp; <div id="hallOutputdiv" class="input-append">
+			  <input class="span3" id="appendedInput" type="text" placeholder="Paste video url first" disabled>
+			  <a id="outputHREF" target="_blank"><span id="buttonOutput" class="add-on btn btn-danger"><i id="iconOutput" class="icon-stop"></i> </span></a>
+				</div> <br> to let people <strong>join in</strong>!
+			<br><br><br>
+		  </div>
+		  
+        </div>
+      </div>
+    </article>
+
+	<br><br><br>
+    <article class="section_divider"></article>
+
+    <div class="boxer_footer">
+      <div class="container">
+        <div class="row">
+          <div class="span12">
+            <ul>
+              <li><a href="http://callandrespon.se/car/">C.A.R.</a></li>
+            </ul>
+            <div class="boxer_copyright">
+              &copy; 2013 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
